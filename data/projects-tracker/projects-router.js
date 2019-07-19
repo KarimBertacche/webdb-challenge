@@ -59,12 +59,47 @@ router.delete('/:id', validateId, async (req, res) => {
     }
 });
 
-router.delete('/:id/actions', validateId, async (req, res) => {
+router.delete('/:id/actions/:actionId', validateId, async (req, res) => {
     try {
         const { id } = req.params;
+        const { actionId } = req.params;
+        const deletedAction = await db.removeAction(id, actionId);
+
+        res.status(204).end();
     } catch(error) {
         res.status(500).json({
             message: 'Server error while deleting the action'
+        });
+    }
+});
+
+router.put('/:id', validateId, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const changes = req.body;
+        const updated = await db.updateProject(id, changes);
+        const updatedProject = await db.getProjectById(id);
+
+        res.status(200).json(updatedProject);
+
+    } catch(error) {
+        res.status(500).json({
+            message: 'Server error while updating project'
+        });
+    }
+});
+
+router.put('/:id/actions/:actionId', async (req, res) => {
+    try {
+        const { id, actionId } = req.params;
+        const changes = req.body;
+        const updated = await db.updateAction(id, actionId, changes);
+        const updatedAction = await db.getActionById(actionId);
+
+        res.status(200).json(updatedAction);
+    } catch(error) {
+        res.status(500).json({
+            message: 'Server error while updating the action'
         });
     }
 });

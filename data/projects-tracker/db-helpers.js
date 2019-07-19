@@ -4,10 +4,14 @@ const db = knex(require('../../knexfile').development);
 module.exports = {
     getProjects,
     getProjectById,
+    getActionById,
     getActionsById,
     insertProject,
     insertAction,
-    removeProject
+    removeProject,
+    removeAction,
+    updateProject,
+    updateAction
 }
 
 function getProjects() {
@@ -45,4 +49,16 @@ function insertAction(action) {
 
 function removeProject(id) {
     return db('projects').where({ id }).del();
+}
+
+function removeAction(id, actionId) {
+    return db('actions').where({ 'id': actionId, 'project_id': id }).del();
+}
+
+function updateProject(id, changes) {
+    return db('projects').where({ id }).update(changes);
+}
+
+function updateAction(id, actionId, changes) {
+    return db('actions').where({ 'id': actionId, 'project_id': id }).update(changes);
 }

@@ -33,9 +33,17 @@ This will be akin to the Web API that you built in the last sprint, only this ti
 Demonstrate your understanding of this week's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
 
 1. Explain the difference between `RDBMS` and `SQL`.
-1. Why do tables need a `primary key`?
-1. What is the name given to a table column that references the primary key on another table.
-1. What do we need in order to have a _many to many_ relationship between two tables.
+`RDBMS` or Relational DataBase Management system is a database software which uses the relational model for managing storage and queries made to the storage itself, because this is a full blown server and system, there is a lot to learn to be able to work with this software, whereas SQL or Structured Query Language simplifies this process for us by being an intermediary between us and the server itself, so it is a language that we use to interact with the system.
+
+2. Why do tables need a `primary key`?
+We use `primary keys` so we can have a unique way to identify a row/record in a table from a database, also they can be used to connect tables to one another by passing it's value to another table foreigner key which relates records from one table to another.
+This way of managing a database makes managing the data a much faster and reliable process, making data consistent across queries made to the database.
+
+3. What is the name given to a table column that references the primary key on another table.
+Foreigner key, meaning that that particular column is related to a unique primary key of another table.
+
+4. What do we need in order to have a _many to many_ relationship between two tables.
+To have a many to many relationship between two table we need linked records fields, for example when thinking about authors and books, we can have to separate tables, one for the authors and one for the books, and as we know that more than one book can have the same author, and more than one author can be contributing to the same book, we would manage those many to many relationship by creating an intermediary table where by using the primary keys from both books and authors as foreigner keys we would link each book to all the authors that contributed to it, and each author to each book that he/she as contributed to. This intermediary table changes the relationship between those two table from many-to-many to an one-to-many relationship, creating more consistent tables and avoiding repetition or breaking any other rules regarding data normalization.
 
 ## Project Set Up
 

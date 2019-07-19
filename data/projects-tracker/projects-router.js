@@ -42,4 +42,31 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.post('/', async (req, res) => {
+    try {
+        const newProject = req.body;
+        const project = await db.insertProject(newProject);
+
+        res.status(201).json(project);
+    } catch(error) {
+        res.status(500).json({
+            message: 'Server error while creating project'
+        });
+    }
+});
+
+router.post("/:id/actions", async (req, res) => {
+    try {
+        const { id } = req.params
+        const newAction = { ...req.body, project_id: id };
+        const action = await db.insertAction(newAction);
+
+        res.status(201).json(action);
+    } catch(error) {
+        res.status(500).json({
+            message: 'Server error while creating action'
+        });
+    }
+});
+
 module.exports = router;

@@ -11,7 +11,8 @@ module.exports = {
     removeProject,
     removeAction,
     updateProject,
-    updateAction
+    updateAction,
+    getActionContext
 }
 
 function getProjects() {
@@ -62,3 +63,24 @@ function updateProject(id, changes) {
 function updateAction(id, actionId, changes) {
     return db('actions').where({ 'id': actionId, 'project_id': id }).update(changes);
 }
+
+function getActionContext(id, actionId) {
+    return db
+        .select('context_type AS context', 'task', 'notes', 'project_name AS project', 'description')
+        .from('contexts AS c')
+        .innerJoin('actions AS a', 'c.action_id', 'a.id')
+        .innerJoin('projects AS p', 'a.project_id', 'p.id')
+        .where({ 'a.id': actionId, 'project_id': id });
+}
+
+// SELECT
+//     context_type AS context,
+//     task,
+//     notes,
+//     project_name,
+//     description
+// FROM contexts AS c
+// JOIN actions AS a
+// ON c.action_id = a.id
+// JOIN projects AS p
+// ON a.project_id = p.id

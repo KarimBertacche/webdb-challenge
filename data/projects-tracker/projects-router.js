@@ -15,31 +15,8 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-
-        if(id) {
-            const project = await db.getProjectById(id);
-            const actions = await db.getActionsById(id);
-
-            const projectActions = {
-                'id': id,
-                ...project,
-                'actions': actions
-            }
-
-            res.status(200).json(projectActions);
-        } else {
-            res.status(404).json({
-                message: 'Id given is not a valid number'
-            });
-        }
-    } catch(error) {
-        res.status(500).json({
-            message: 'Server error while retrieving project by id'
-        });
-    }
+router.get('/:id', validateId, async (req, res) => {
+    res.status(200).json(req.projectActions); 
 });
 
 router.post('/', async (req, res) => {
@@ -55,7 +32,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.post("/:id/actions", async (req, res) => {
+router.post('/:id/actions', validateId, async (req, res) => {
     try {
         const { id } = req.params
         const newAction = { ...req.body, project_id: id };
@@ -68,5 +45,65 @@ router.post("/:id/actions", async (req, res) => {
         });
     }
 });
+
+router.delete('/:id', validateId, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleted = await db.removeProject(id);
+            
+        res.status(204).end();
+    } catch(error) {
+        res.status(500).json({
+            message: 'Server error while deleting the project'
+        });
+    }
+});
+
+router.delete('/:id/actions', validateId, async (req, res) => {
+    try {
+        const { id } = req.params;
+    } catch(error) {
+        res.status(500).json({
+            message: 'Server error while deleting the action'
+        });
+    }
+});
+
+async function validateId(req, res, next) {
+    try {
+        const { id } = req.params;
+
+        if(!isNaN(parseInt(id))) {
+            const project = await db.getProjectById(id);
+
+            if(project) {
+                const actions = await db.getActionsById(id);
+    
+                const projectActions = {
+                    'id': id,
+                    ...project,
+                    'actions': actions
+                }
+    
+                req.projectActions = projectActions
+    
+                next();
+
+            } else {
+                res.status(404).json({
+                    message: 'Project id not found'
+                });
+            }
+        } else {
+            res.status(404).json({
+                message: 'Id given is not a valid number'
+            });
+        }
+    } catch(error) {
+        res.status(500).json({
+            message: 'Server error while retrieving project by id'
+        });
+    } 
+}
 
 module.exports = router;

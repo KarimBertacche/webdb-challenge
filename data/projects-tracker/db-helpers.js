@@ -6,7 +6,8 @@ module.exports = {
     getProjectById,
     getActionsById,
     insertProject,
-    insertAction
+    insertAction,
+    removeProject
 }
 
 function getProjects() {
@@ -40,4 +41,8 @@ function insertAction(action) {
         .then(id => {
             return getActionById(id[0]);
         });
+}
+
+function removeProject(id) {
+    return db('projects').where({ id }).del();
 }

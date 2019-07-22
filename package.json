@@ -1,0 +1,26 @@
+{
+  "name": "project-tracker",
+  "version": "1.0.0",
+  "description": "sprint challenge week 12 day 5",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KarimBertacche/webdb-challenge.git"
+  },
+  "author": "Karim Bertacche",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KarimBertacche/webdb-challenge/issues"
+  },
+  "homepage": "https://github.com/KarimBertacche/webdb-challenge#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "helmet": "^3.19.0",
+    "knex": "^0.19.0",
+    "nodemon": "^1.19.1",
+    "sqlite3": "^4.0.9"
+  }
+}
